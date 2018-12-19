@@ -1,0 +1,29 @@
+#设置tomcat的端口为8080
+server:
+  port: 8080
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/StuManagement?characterEncoding=utf-8&useSSL=false
+    username: root
+    password: 8113558
+  mvc:
+    view:
+      suffix: .html
+  resources:
+    # 静态资源
+    static-locations: classpath:/templates,classpath:/static/
+    #AOP
+  aop:
+    proxy-target-class: true
+
+mybatis:
+  type-aliases-package: com.example.entity
+  mapper-locations: classpath:mapping/*.xml
+# 分页插件配置
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
