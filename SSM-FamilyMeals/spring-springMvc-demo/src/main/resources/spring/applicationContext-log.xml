@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context.xsd">
+    <!-- 注解配置增强 -->
+    <!-- 扫描增强类所在的包 -->
+    <context:component-scan base-package="com.ljt.aop" />
+    <!-- 开启注解增强 -->
+    <aop:aspectj-autoproxy />
+
+
+    <!-- xml配置增强 -->
+ <!--    	<bean id="logAop" class="com.ljt.aop.LogAop" />
+        <aop:config>
+            <aop:pointcut id="servicePointcut" expression="execution(* com.ljt.service..*(..))" />
+            <aop:aspect ref="logAop">
+                &lt;!&ndash;前置增强&ndash;&gt;
+            <aop:before method="before" pointcut-ref="servicePointcut"/>
+            &lt;!&ndash;后置增强&ndash;&gt;
+            <aop:after-returning method="afterReturning" pointcut-ref="servicePointcut" returning="object"/>
+            &lt;!&ndash;异常增强&ndash;&gt;
+            <aop:after-throwing method="afterThrowing" pointcut-ref="servicePointcut" throwing="e"/>
+            &lt;!&ndash;最终增强&ndash;&gt;
+            <aop:after method="after" pointcut-ref="servicePointcut"/>
+            &lt;!&ndash;环绕增强&ndash;&gt;
+            <aop:around method="around" pointcut-ref="servicePointcut"/>
+        </aop:aspect>
+        </aop:config>-->
+</beans>

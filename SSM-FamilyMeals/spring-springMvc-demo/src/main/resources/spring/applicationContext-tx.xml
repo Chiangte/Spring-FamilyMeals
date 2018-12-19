@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="
+    http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop.xsd ">
+    <!--导入数据源包-->
+    <import resource="applicationContext-dao.xml"/>
+    <!--配置事务管理器-->
+    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <!--注入数据源-->
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!--定义事务通知-->
+    <tx:advice id="txAdvice" transaction-manager="txManager">
+        <tx:attributes>
+            <!--传播行为-->
+            <tx:method name="get*" read-only="true"/>
+            <tx:method name="is*" read-only="true" />
+            <tx:method name="*" />
+        </tx:attributes>
+    </tx:advice>
+    <!--定义事务切面编程-->
+    <aop:config>
+        <!--自定义事务切面                   ↓ 表达式 -->
+        <aop:pointcut id="servicePointcut" expression="execution(* com.ljt.service..*(..))"/>
+        <!--植入事务通知-->
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="servicePointcut"/>
+        <!--方式二-->
+        <!--<aop:advisor advice-ref="txAdvice" pointcut="execution(* com.ljt.service..*(..))"/>-->
+    </aop:config>
+</beans>
