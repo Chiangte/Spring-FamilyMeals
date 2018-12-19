@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+	defaultdir	指定装饰文件所在目录
+ -->
+<decorators defaultdir="/WEB-INF/decorators">
+	<!-- 哪些请求或页面不需要装饰 -->
+	<excludes>
+		<!-- 登录请求不需要装饰，支持正则表达式方式的配置 -->
+		<pattern>/login</pattern>
+	</excludes>
+	
+	<!-- 顶部菜单装饰器 -->
+	<decorator name="top_menu" page="top_menu.jsp" />
+	<!-- 左侧菜单装饰器 -->
+	<decorator name="left_menu" page="left_menu.jsp" />
+	<!-- 版权声明装饰器 -->
+	<decorator name="copyright" page="copyright.jsp" />
+	
+	<!-- 
+		装饰器配置
+		name	装饰器的逻辑名称，可以被其它装饰器引用
+		page	装饰器页面的名称，位于/WEB-INF/decorators文件夹下面 
+	-->
+	<decorator name="main" page="main.jsp">
+		<!-- 
+			对所有请求或页面都要装饰，支持正则表达式方式的配置
+			当然这里的“所有请求或页面”一定是除“/login”以外的所有请求或页面 
+		-->
+		<pattern>/*</pattern>
+	</decorator>
+</decorators>

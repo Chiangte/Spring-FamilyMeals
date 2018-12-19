@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.borrow.mapper.BorrowMapper">
+	<select id="countByMidAndReturnDateIsNull" resultType="long">
+		select count(1) from t_borrow where mid = #{id} and returnDate is null
+	</select>
+	<delete id="removeByMid">
+		delete from t_borrow where mid = #{id} and returnDate is not null
+	</delete>
+	<select id="countByBidAndReturnDateIsNull" resultType="long">
+		select count(1) from t_borrow where bid = #{id} and returnDate is null
+	</select>
+	<delete id="removeByBid">
+		delete from t_borrow where bid = #{id} and returnDate is not null
+	</delete>
+	<resultMap id="borrowListMap" type="com.borrow.pojo.Borrow" autoMapping="true">
+		<id property="id" column="id" />
+		<association property="book" javaType="com.borrow.pojo.Book">
+	    	<id property="id" column="bid"/>
+	    	<result property="name" column="bookName"/>
+	    	<result property="cover" column="cover"/>
+	  	</association>
+		<association property="member" javaType="com.borrow.pojo.Member">
+	    	<id property="id" column="mid"/>
+	    	<result property="name" column="memberName"/>
+	  	</association>
+	</resultMap>
+	<select id="findByLikeName" resultMap="borrowListMap">
+		select 
+			t_borrow.id, borrowDate, returnDate, 
+			bid, t_book.name bookName, cover, 
+			mid, t_member.name memberName 
+		from 
+			t_borrow
+		inner join 
+			t_book on t_book.id = bid
+		inner join 
+			t_member on t_member.id = mid
+		<if test="keyword != null and keyword.length() > 0">
+			where 
+				t_book.name like concat('%', #{keyword}, '%') 
+				or t_member.name like concat('%', #{keyword}, '%')
+		</if>
+		order by returnDate asc, borrowDate asc
+	</select>
+	<update id="update">
+		update t_borrow set returnDate = #{returnDate} where id = #{id} and returnDate is null
+	</update>
+	<delete id="remove">
+		delete from t_borrow where id = #{id} and returnDate is not null
+	</delete>
+	<insert id="save">
+		insert into t_borrow values
+		<foreach collection="bookIds" item="bid" open="" close="" separator=",">
+			(null, #{mid}, #{bid}, #{borrowDate}, null)
+		</foreach>
+	</insert>
+</mapper>

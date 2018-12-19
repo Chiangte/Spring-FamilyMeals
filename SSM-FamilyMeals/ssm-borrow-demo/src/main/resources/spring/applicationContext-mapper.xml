@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:content="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context.xsd">
+	<!--配置扫描的包-->
+	 <content:component-scan base-package="com.borrow.mapper" />
+	<!-- 配置数据库相关参数properties的属性：${url} -->
+	 <content:property-placeholder location="classpath:properties/jdbc.properties"/>
+	<!-- 数据库连接池 -->
+	 <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+	 	<property name="driverClassName" value="${jdbc.driverClassName}" />
+	 	<property name="url" value="${jdbc.url}" />
+	 	<property name="username" value="${jdbc.username}" />
+	 	<property name="password" value="${jdbc.password}" />
+		 <property name="maxActive" value="${druid.maxActive}" />
+		 <property name="minIdle" value="${druid.minIdle}"/>
+	 </bean>
+
+	<!--配置SqlSessionFactory对象-->
+	 <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+	 	<!-- 注入数据源 -->
+	 	<property name="dataSource" ref="dataSource" />
+		 <!-- 扫描sql配置文件:mapper需要的xml文件 -->
+	 	<property name="mapperLocations" value="classpath:mybatis/*Mapper.xml" />
+		 <!-- 扫描entity包 使用别名 -->
+	 	<property name="typeAliasesPackage" value="com.borrow.pojo" />
+	 	<!-- <property name="configurationProperties">
+	 		<props>
+	 			自动映射任意复杂的结果集（无论是否嵌套)
+	 			<prop key="autoMappingBehavior">FULL</prop>
+	 		</props>
+	 	</property> -->
+	 	<!-- 配置插件 -->
+	 	<property name="plugins">
+	 		<array>
+				<!--配置pagehelper分页插件-->
+	 			<bean class="com.github.pagehelper.PageInterceptor">
+	 				<property name="properties">
+	 					<props>
+							<!-- 指定数据库方言 -->
+	 						<prop key="helperDialect">mysql</prop>
+							<!-- 是否合理化调整分页参数 -->
+	 						<prop key="reasonable">true</prop>
+	 					</props>
+	 				</property>
+	 			</bean>
+	 		</array>
+	 	</property>
+	 </bean>
+	<!-- 配置扫描Mapper(dao)接口包，动态实现Mapper(dao)接口，注入到spring容器中 -->
+	 <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		 <!-- 注入sqlSessionFactory -->
+		 <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+	 	<!-- 配置Mapper接口所在的包 -->
+	 	<property name="basePackage" value="com.borrow.mapper" />
+	 </bean>
+</beans>

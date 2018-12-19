@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--忽略红-->
+<mapper namespace="com.borrow.mapper.BookMapper">
+	<resultMap id="bookListMap" type="com.borrow.pojo.Book" autoMapping="true">
+		<id property="id" column="id" />
+		<association property="publishing" javaType="com.borrow.pojo.Publishing">
+	    	<id property="id" column="pid"/>
+	    	<result property="name" column="publishingName"/>
+	  	</association>
+	</resultMap>
+	<select id="findByLikeName" resultMap="bookListMap">
+		select b.id, b.name, author, price, pid, createDate, cover, summary, p.name publishingName from t_book b inner join t_publishing p on p.id = b.pid
+		<if test="keyword != null and keyword.length() > 0">
+			and b.name like concat('%', #{keyword}, '%')
+		</if>
+	</select>
+	<delete id="remove">
+		delete from t_book where id = #{id}
+	</delete>
+	<insert id="save" parameterType="com.borrow.pojo.Book">
+		insert into t_book values(null, #{name}, #{author}, #{price}, #{publishing.id}, #{createDate}, #{cover}, #{summary})
+	</insert>
+	<select id="countByName" resultType="long">
+		select count(1) from t_book where name = #{name}
+		<if test="id != null and id > 0">
+			 and id != #{id}
+		</if>
+	</select>
+	<resultMap id="bookMap" type="com.borrow.pojo.Book" autoMapping="true">
+		<id property="id" column="id" />
+		<association property="publishing" javaType="com.borrow.pojo.Publishing">
+	    	<id property="id" column="pid"/>
+	  	</association>
+	</resultMap>
+	<select id="findById" resultMap="bookMap">
+		select id, name, author, price, pid, createDate, cover, summary from t_book where id = #{id}
+	</select>
+	<update id="update" parameterType="com.borrow.pojo.Book">
+		update 
+			t_book 
+		set 
+			name = #{name}, 
+			author = #{author}, 
+			price = #{price}, 
+			pid = #{publishing.id}, 
+			createDate = #{createDate}, 
+			cover = #{cover}, 
+			summary = #{summary} 
+		where 
+			id = #{id}
+	</update>
+	<select id="findAllowByName" resultType="com.borrow.pojo.Book">
+		select 
+			id, name, author, price 
+		from 
+			t_book 
+		where 
+			id not in (select bid from t_borrow where returnDate is null)
+		<if test="keyword != null and keyword.length() > 0">
+			and name like concat('%', #{keyword}, '%')
+		</if>
+	</select>
+</mapper>

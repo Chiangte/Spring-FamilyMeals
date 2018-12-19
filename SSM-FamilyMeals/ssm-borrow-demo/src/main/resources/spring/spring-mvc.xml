@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:content="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/mvc
+		http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context.xsd">
+	<!--配置扫描的包-->
+	 <content:component-scan base-package="com.borrow.web" />
+	<!--配置注解驱动-->
+	 <mvc:annotation-driven validator="validator" />
+	<!--静态资源文件访问-->
+	 <mvc:resources location="classpath:static/" mapping="/assets/**" />
+	 <mvc:interceptors>
+	 	<mvc:interceptor>
+	 		<mvc:mapping path="/**"/>
+	 		<mvc:exclude-mapping path="/login"/>
+	 		<mvc:exclude-mapping path="/kaptcha.jpg"/>
+	 		<mvc:exclude-mapping path="/assets/**"/>
+	 		<bean class="com.borrow.web.interceptor.LoginInterceptor">
+	 			<property name="redirectUrl" value="/login" />
+	 		</bean>
+	 	</mvc:interceptor>
+	 </mvc:interceptors>
+
+	<!--配置视图解析器-->
+	 <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	 	<property name="prefix" value="/WEB-INF/views/" />
+	 	<property name="suffix" value=".jsp" /> <!--/jsp-->
+	 </bean>
+	 <!-- 文件上传配置 -->
+	 <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	 	<!-- 文件编码 -->
+	 	<property name="defaultEncoding" value="UTF-8" />
+	 	<!-- 缓冲区大小，默认值是10240字节 -->
+	 	<property name="maxInMemorySize" value="20480" />
+	 	<!-- 允许上传的所有文件的总大小，单位是字节。104857600B=100MB -->
+	 	<property name="maxUploadSize" value="10737418240" />
+	 	<!-- 允许上传的单个文件的最大大小，单位是字节。10485760B=10MB -->
+	 	<property name="maxUploadSizePerFile" value="1073741824" />
+	 	<!-- 上传的临时目录 -->
+	 	<property name="uploadTempDir" value="/temp" />
+	 </bean>
+	<!-- 配置资源文件读取的bean -->
+	<!-- 国际化资源文件
+			messageSource配置的是国际化资源文件的路径，
+			classpath:messages指的是classpath路径下的
+			messages_zh_CN.properties文件和messages_en_US.properties文件
+			设置“useCodeAsDefaultMessage”，默认为false，
+			这样当Spring在ResourceBundle中找不到messageKey的话，就抛出NoSuchMessageException，
+			把它设置为True，则找不到不会抛出异常，而是使用messageKey作为返回值。 -->
+	 <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+
+		 <!--<property name="useCodeAsDefaultMessage" value="true" />-->
+
+		 <!-- 注入资源文件读取的间隔时间 -->
+		 <property name="cacheSeconds" value="90" />
+		 <!-- 注入资源文件的编码 -->
+		 <property name="defaultEncoding" value="UTF-8" />
+	 	<!-- 注入资源文件的路径 -->
+	 	<property name="basenames">
+	 		<array>
+	 			<value>org.hibernate.validator.ValidationMessages</value>
+	 			<value>i18n.messages</value>
+	 		</array>
+	 	</property>
+
+	 </bean>
+	<!--该拦截器通过名为”lang”的参数来拦截HTTP请求，使其重新设置页面的区域化信息-->
+	<!-- 配置验证工厂 -->
+	 <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+	 	<!-- 注入资源bean -->
+	 	<property name="validationMessageSource" ref="messageSource" />
+	 </bean>
+
+	<!--	<mvc:interceptors>
+		<bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+			<property name="paramName" value="lang" />
+		</bean>
+	</mvc:interceptors>-->
+
+<!--	    &lt;!&ndash;拦截器&ndash;&gt;
+     <mvc:interceptors>
+     &lt;!&ndash;可配置多个拦截器,顺序执行 &ndash;&gt; <mvc:interceptor>
+     <mvc:mapping path="/product/**"/>&lt;!&ndash;如果不配置或/*,将拦截所有的Controller &ndash;&gt;
+     <bean class="manage.base.interceptor.PermissionInterceptor">
+     </bean>
+     </mvc:interceptor> </mvc:interceptors> -->
+</beans>

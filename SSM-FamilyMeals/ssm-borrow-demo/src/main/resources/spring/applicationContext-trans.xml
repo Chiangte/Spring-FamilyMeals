@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop.xsd">
+	 <!-- 配置事务管理器 -->
+	 <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		 <!-- 注入数据库连接池 -->
+	 	<property name="dataSource" ref="dataSource" />
+	 </bean>
+	 <!-- 定义事务通知 -->
+	<!-- 配置基于注解的声明式事务  指定在连接方法上应用的事务属性 -->
+	 <tx:advice id="txAdvice" transaction-manager="txManager">
+	 	<tx:attributes>
+			<!-- 所有以get开头方法，应用只读事务 -->
+	 		<tx:method name="get*" read-only="true"/>
+			<!-- 其它所有方法，非只读事务 -->
+	 		<tx:method name="is*" read-only="true"/>
+	 		<tx:method name="*"/>
+	 	</tx:attributes>
+	 </tx:advice>
+	 <!-- 定义事务切面，并织入事务通知 -->
+	 <aop:config>
+	 	<!-- 定义事务切面 -->
+	 	<aop:pointcut expression="execution(* com.borrow.service..*(..))" id="servicePointcut"/>
+	 	<!-- 织入事务通知 -->
+	 	<aop:advisor advice-ref="txAdvice" pointcut-ref="servicePointcut"/>
+	 </aop:config>
+
+	<!--&lt;!&ndash;让spring管理SqlSessionFactory&ndash;&gt;
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		&lt;!&ndash;加载mybatis的全局配置文件&ndash;&gt;
+		<property name="configLocation" value="classpath:mybatis/mybatis-config.xml"/>
+	</bean>
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		&lt;!&ndash;具体dao层包的位置&ndash;&gt;
+		<property name="basePackage" value="manage.dao"/>
+	</bean>-->
+</beans>

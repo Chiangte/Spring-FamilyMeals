@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.borrow.mapper.MemberMapper">
+	<select id="findByLikeName" parameterType="java.lang.String" resultType="com.borrow.pojo.Member">
+		select id, name, identityCard, phone, createTime from t_member
+		<if test="keyword != null and keyword.length() > 0">
+			where name like concat('%', #{keyword}, '%')
+		</if>
+	</select>
+	
+	<select id="countByIdentityCard" resultType="long">
+		select count(1) from t_member where identityCard = #{identityCard}
+		<if test="id != null and id > 0">
+			 and id != #{id}
+		</if>
+	</select>
+	
+	<select id="countByPhone" resultType="long">
+		select count(1) from t_member where phone = #{phone}
+		<if test="id != null and id > 0">
+			 and id != #{id}
+		</if>
+	</select>
+	
+	<insert id="save" parameterType="Member">
+		insert into t_member values(null, #{name}, #{identityCard}, #{phone}, #{createTime})
+	</insert>
+	
+	<select id="findById" resultType="Member">
+		select id, name, identityCard, phone, createTime from t_member where id = #{id}
+	</select>
+	
+	<update id="update" parameterType="Member">
+		update t_member set name = #{name}, identityCard = #{identityCard}, phone = #{phone} where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from t_member where id = #{id}
+	</delete>
+	
+	<select id="findIdByIdentityCard" resultType="java.lang.Long">
+		select id from t_member where identityCard = #{identityCard}
+	</select>
+</mapper>
