@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="distributionType" value="LOCAL" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/SpringBoot-FamilyMeals/springboot-curd" />
+        <option name="gradleHome" value="D:/Application/Gradle/gradle-5.0-rc-1" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/SpringBoot-FamilyMeals/springboot-curd" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="distributionType" value="LOCAL" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/SpringBoot-FamilyMeals/springboot-gradle" />
+        <option name="gradleHome" value="D:/Application/Gradle/gradle-5.0-rc-1" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/SpringBoot-FamilyMeals/springboot-gradle" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>

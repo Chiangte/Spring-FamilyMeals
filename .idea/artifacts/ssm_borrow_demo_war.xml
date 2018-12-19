@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="ssm-borrow-demo:war">
+    <output-path>$PROJECT_DIR$/SSM-FamilyMeals/ssm-borrow-demo/target</output-path>
+    <root id="archive" name="ssm-borrow-demo-0.0.1-SNAPSHOT.war">
+      <element id="artifact" artifact-name="ssm-borrow-demo:war exploded" />
+    </root>
+  </artifact>
+</component>

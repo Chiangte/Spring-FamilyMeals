@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="spring-springMvc-demo:war">
+    <output-path>$PROJECT_DIR$/SSM-FamilyMeals/spring-springMvc-demo/target</output-path>
+    <root id="archive" name="spring-demo.war">
+      <element id="artifact" artifact-name="spring-springMvc-demo:war exploded" />
+    </root>
+  </artifact>
+</component>
