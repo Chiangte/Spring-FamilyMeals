@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Spring-FamilyMeals.iml" filepath="$PROJECT_DIR$/.idea/Spring-FamilyMeals.iml" />
       <module fileurl="file://$PROJECT_DIR$/SSM-FamilyMeals/spring-springMvc-demo/spring-springMvc-demo.iml" filepath="$PROJECT_DIR$/SSM-FamilyMeals/spring-springMvc-demo/spring-springMvc-demo.iml" />
-      <module fileurl="file://$PROJECT_DIR$/SpringBoot-FamilyMeals/springboot-curd/springboot-curd.iml" filepath="$PROJECT_DIR$/SpringBoot-FamilyMeals/springboot-curd/springboot-curd.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/springboot-gradle.iml" filepath="$PROJECT_DIR$/.idea/modules/springboot-gradle.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/springboot-gradle_main.iml" filepath="$PROJECT_DIR$/.idea/modules/springboot-gradle_main.iml" group="springboot-gradle" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/springboot-gradle_test.iml" filepath="$PROJECT_DIR$/.idea/modules/springboot-gradle_test.iml" group="springboot-gradle" />
